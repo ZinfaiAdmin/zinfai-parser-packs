@@ -1,0 +1,173 @@
+{
+  "pack_version": 1,
+  "name": "community",
+  "generated_at": "2026-08-19T06:09:15.839225+00:00",
+  "specs": [
+    {
+      "spec": {
+        "id": "example_bank_savings",
+        "version": 1,
+        "label": "Example Bank \u2014 Savings (sample entry)",
+        "kind": "bank_savings",
+        "origin": "builtin",
+        "sources": [
+          {
+            "engine": "excel_table",
+            "formats": [
+              "xlsx",
+              "csv"
+            ],
+            "date_formats": [
+              "%d/%m/%Y"
+            ],
+            "columns": {
+              "date": [
+                "Date"
+              ],
+              "description": [
+                "Narration"
+              ],
+              "reference": [
+                "Chq./Ref.No."
+              ],
+              "debit": [
+                "Withdrawal Amt."
+              ],
+              "credit": [
+                "Deposit Amt."
+              ],
+              "balance": [
+                "Closing Balance"
+              ]
+            },
+            "header": {
+              "match": "row_substring",
+              "all_of": [
+                "date",
+                "narration",
+                "closing balance"
+              ]
+            },
+            "stop_if_row_contains": [
+              "end of statement"
+            ]
+          }
+        ],
+        "bank_key": "example_bank",
+        "keywords": [
+          "example bank",
+          "examplebank"
+        ]
+      },
+      "fixture": {
+        "format": "xlsx",
+        "rows": [
+          [
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "Date",
+            "Narration",
+            "Chq./Ref.No.",
+            "Withdrawal Amt.",
+            "Deposit Amt.",
+            "Closing Balance"
+          ],
+          [
+            "07/01/2026",
+            "UPI-INDIGO SABLE-vesper@rowanxxxxxx",
+            "980178318435",
+            "4092.35",
+            "",
+            "1,031.79"
+          ],
+          [
+            "08/01/2026",
+            "NEFT DR-ROWA PAYMENT",
+            "N234567890123",
+            "2,608.09",
+            "",
+            "7,410.00"
+          ],
+          [
+            "10/01/2026",
+            "UMBERX CREDIT",
+            "SAL4433221",
+            "",
+            "1,760.90",
+            "3,654.03"
+          ],
+          [
+            "12/01/2026",
+            "POS 1082XXXXXXXX8901 BRAVOXXXXXX",
+            "333333221100",
+            "4,683.97",
+            "",
+            "9,056.59"
+          ],
+          [
+            "",
+            "*** End of Statement ***",
+            "",
+            "",
+            "",
+            ""
+          ]
+        ]
+      },
+      "expected": [
+        {
+          "date": "2026-01-07",
+          "description": "UPI-INDIGO SABLE-vesper@rowanxxxxxx",
+          "amount": 4092.35,
+          "type": "debit",
+          "balance": 1031.79
+        },
+        {
+          "date": "2026-01-08",
+          "description": "NEFT DR-ROWA PAYMENT",
+          "amount": 2608.09,
+          "type": "debit",
+          "balance": 7410.0
+        },
+        {
+          "date": "2026-01-10",
+          "description": "UMBERX CREDIT",
+          "amount": 1760.9,
+          "type": "credit",
+          "balance": 3654.03
+        },
+        {
+          "date": "2026-01-12",
+          "description": "POS 1082XXXXXXXX8901 BRAVOXXXXXX",
+          "amount": 4683.97,
+          "type": "debit",
+          "balance": 9056.59
+        }
+      ],
+      "generated_at": "2026-08-19T06:09:15.839221+00:00",
+      "contributor": "zinfai"
+    }
+  ]
+}

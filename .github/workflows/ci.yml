@@ -1,0 +1,67 @@
+name: Validate packs
+
+# Every contributed spec is run against the redacted sample it ships with, on
+# every pull request. A spec that does not reproduce its own sample does not
+# merge — that check is the only reason anyone should be willing to install
+# a parser written by a stranger.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out this pack repository
+        uses: actions/checkout@v4
+
+      # Validation runs Zinfai's own schema and interpreter rather than a copy,
+      # because a second implementation would eventually disagree with the
+      # first and the disagreement would be silent. Zinfai is currently a
+      # private repository, so this needs a read-only token; see README →
+      # "Running the check yourself" for what to do on a pull request from a
+      # fork, where GitHub does not expose secrets.
+      - name: Check out Zinfai, for its schema and interpreter
+        id: zinfai
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          repository: ZinfaiAdmin/zinfai
+          token: ${{ secrets.ZINFAI_REPO_TOKEN || github.token }}
+          path: zinfai
+
+      - name: Explain a missing checkout rather than failing cryptically
+        if: steps.zinfai.outcome == 'failure'
+        run: |
+          echo "::error::Could not check out Zinfai. On a pull request from a" \
+               "fork this is expected — a maintainer will run validation." \
+               "Otherwise, set the ZINFAI_REPO_TOKEN secret to a token with" \
+               "read access to ZinfaiAdmin/zinfai."
+          exit 1
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install what the interpreter needs
+        # The validator only ever runs specs against in-memory fixtures, so
+        # this is the import closure of the interpreter and nothing more — no
+        # database is contacted and no server is started.
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install \
+            openpyxl 'pydantic>=2' pydantic-settings loguru \
+            sqlalchemy psycopg2-binary pandas PyPDF2 pdfplumber PyMuPDF \
+            python-jose 'passlib[bcrypt]' python-dotenv
+
+      - name: Every spec must reproduce its own sample
+        env:
+          ZINFAI_BACKEND: ${{ github.workspace }}/zinfai/backend
+        run: |
+          for pack in packs/*.json; do
+            echo "== $pack"
+            python tools/validate.py "$pack"
+          done
