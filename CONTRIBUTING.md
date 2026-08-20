@@ -31,11 +31,14 @@ less work for you and more for us, which is the right way round.
 
 ### Let Zinfai fill in the form
 
-4. Click **Submit it**. Zinfai opens a GitHub issue with the entry already
-   written into the body.
-5. Read that body — it is your last look at the fixture before it is public —
-   and press **Submit new issue**. Nothing has been sent until you do.
-6. A maintainer runs the validator and opens the pull request for you.
+4. Click **Submit it**. Zinfai opens the contribution issue form with the
+   institution and the entry already filled in.
+5. Read it — this is your last look at the fixture before it is public — tick
+   the two boxes and press **Submit new issue**. Nothing has been sent until
+   you do.
+6. The issue is labelled with the institution automatically (`bank: hdfc-bank`,
+   and so on), and a maintainer runs the validator and opens the pull request
+   for you.
 
 Zinfai ships no credential and cannot post anything on your behalf. The button
 fills in a form; you are the one who submits it. If you close the tab without
@@ -50,6 +53,19 @@ too large to fit into a pre-filled issue.
 5. Append it to the `specs` array in `packs/community.json`.
 6. Run `python tools/validate.py packs/community.json`.
 7. Open a pull request.
+
+### Labels
+
+Contributions are labelled `parser-contribution` plus one `bank: …` label taken
+from the Institution field, so you can check whether someone has already
+submitted your bank before writing a parser for it:
+
+```
+https://github.com/ZinfaiAdmin/zinfai-parser-packs/issues?q=label:"bank: hdfc-bank"
+```
+
+Keep the Institution field to the plain name — "HDFC Bank", not "HDFC Bank
+savings statement PDF" — or it becomes its own label and groups with nothing.
 
 ## What gets rejected
 

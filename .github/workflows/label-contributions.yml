@@ -1,0 +1,84 @@
+name: Label contributions
+
+# Put the institution on the issue as a label, so contributions can be filtered
+# by bank without reading every one of them.
+#
+# This has to happen here rather than in the URL Zinfai opens. GitHub honours
+# `?labels=` only for people who already have permission to label the repo, and
+# returns a 404 to everyone else — which is every contributor arriving from the
+# app. A workflow runs with the repository's own permissions, so it works for
+# anyone, and it can create a label that does not exist yet.
+
+on:
+  issues:
+    types: [opened, edited]
+
+permissions:
+  issues: write
+
+jobs:
+  label:
+    # The title check is a fallback: if the template's own label ever fails to
+    # apply, a contribution should still get sorted rather than sit unlabelled.
+    if: >-
+      contains(github.event.issue.labels.*.name, 'parser-contribution') ||
+      startsWith(github.event.issue.title, 'Parser contribution:')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add a bank label from the Institution field
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = context.payload.issue.body || '';
+
+            // Issue forms render as "### Field name" followed by the value.
+            const match = body.match(/###\s*Institution\s*\r?\n+\s*([^\r\n]+)/i);
+            if (!match) {
+              core.info('No Institution field found; leaving the issue alone.');
+              return;
+            }
+
+            const raw = match[1].trim();
+            if (!raw || raw === '_No response_') {
+              core.info('Institution field is empty; leaving the issue alone.');
+              return;
+            }
+
+            // Normalise so "HDFC Bank", "hdfc  bank" and "HDFC-Bank" all land on
+            // one label instead of three. Anything outside [a-z0-9-] goes: the
+            // field is contributor-supplied text and ends up in a label name.
+            const slug = raw
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, '-')
+              .replace(/^-+|-+$/g, '')
+              .slice(0, 40);
+
+            if (!slug) {
+              core.info(`Institution ${JSON.stringify(raw)} normalised to nothing; skipping.`);
+              return;
+            }
+
+            const name = `bank: ${slug}`;
+            const { owner, repo } = context.repo;
+
+            try {
+              await github.rest.issues.createLabel({
+                owner,
+                repo,
+                name,
+                color: '1f6feb',
+                description: `Statement parsers for ${raw.slice(0, 80)}`,
+              });
+              core.info(`Created label "${name}".`);
+            } catch (error) {
+              // 422 is "already exists", which is the common case.
+              if (error.status !== 422) throw error;
+            }
+
+            await github.rest.issues.addLabels({
+              owner,
+              repo,
+              issue_number: context.payload.issue.number,
+              labels: [name],
+            });
+            core.info(`Labelled #${context.payload.issue.number} with "${name}".`);
