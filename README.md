@@ -61,7 +61,13 @@ instead, because that is a bug in the redactor.
 2. Once the parser reads your statements correctly, use **Contribute** on that
    parser. Zinfai builds the redacted sample and hands you a JSON entry.
 3. Read the entry.
-4. Open a pull request adding it to `packs/community.json` under `specs`.
+4. Click **Submit it**. Zinfai opens a GitHub issue with the entry filled in;
+   you read it there and press submit, and a maintainer turns it into a pull
+   request. Or skip that and open the pull request yourself, adding the entry to
+   `packs/community.json` under `specs`.
+
+Zinfai has no credential for this repository and never posts anything on your
+behalf — the button pre-fills a form and stops.
 
 CI will validate it. If it fails, the error names the exact row and field that
 disagreed.

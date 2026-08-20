@@ -17,15 +17,39 @@ demonstrably doesn't.
 
 ## Steps
 
+Start here whichever way you submit:
+
 1. Get the parser working in Zinfai first (Settings → Statement Parsers). A
    parser that has not read your own statements correctly is not ready.
 2. Click **Contribute** on it. Zinfai builds the redacted fixture.
 3. **Read the fixture.** Every value in it should be obviously fake. If you
    recognise anything — a payee, a partial account number, an amount you
    remember — stop and open an issue. That is a redactor bug and we want it.
-4. Append the entry to the `specs` array in `packs/community.json`.
-5. Run `python tools/validate.py packs/community.json`.
-6. Open a pull request.
+
+Then pick one of the two routes below. They end in the same place; the first is
+less work for you and more for us, which is the right way round.
+
+### Let Zinfai fill in the form
+
+4. Click **Submit it**. Zinfai opens a GitHub issue with the entry already
+   written into the body.
+5. Read that body — it is your last look at the fixture before it is public —
+   and press **Submit new issue**. Nothing has been sent until you do.
+6. A maintainer runs the validator and opens the pull request for you.
+
+Zinfai ships no credential and cannot post anything on your behalf. The button
+fills in a form; you are the one who submits it. If you close the tab without
+submitting, nothing has happened and you can start again.
+
+### Open the pull request yourself
+
+Use this if you would rather do it by hand, or if Zinfai tells you the entry is
+too large to fit into a pre-filled issue.
+
+4. Copy or download the entry from the same dialog.
+5. Append it to the `specs` array in `packs/community.json`.
+6. Run `python tools/validate.py packs/community.json`.
+7. Open a pull request.
 
 ## What gets rejected
 
