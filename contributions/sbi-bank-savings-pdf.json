@@ -1,0 +1,146 @@
+{
+  "generated_at": "2026-09-19T08:28:51.266494+00:00",
+  "name": "sbi-contribution",
+  "pack_version": 1,
+  "specs": [
+    {
+      "expected": [
+        {
+          "amount": 2746.18,
+          "balance": 3103.62,
+          "date": "2026-04-16",
+          "description": "AT 27379 -",
+          "type": "debit"
+        },
+        {
+          "amount": 7066.65,
+          "balance": 6213.02,
+          "date": "2026-05-11",
+          "description": "OF MAR UMBER 564640",
+          "type": "debit"
+        },
+        {
+          "amount": 1625.41,
+          "balance": 8086.98,
+          "date": "2026-05-24",
+          "description": "OF MAR UMBER 564641",
+          "type": "debit"
+        },
+        {
+          "amount": 7480.61,
+          "balance": 4336.28,
+          "date": "2026-05-30",
+          "description": "",
+          "type": "debit"
+        },
+        {
+          "amount": 6037.77,
+          "balance": 7723.92,
+          "date": "2026-06-14",
+          "description": "OF MAR UMBER 564654",
+          "type": "debit"
+        },
+        {
+          "amount": 1662.08,
+          "balance": 2989.92,
+          "date": "2026-06-25",
+          "description": "-",
+          "type": "credit"
+        },
+        {
+          "amount": 3256.68,
+          "balance": 3218.38,
+          "date": "2026-06-28",
+          "description": "CREDIT -",
+          "type": "credit"
+        },
+        {
+          "amount": 7167.47,
+          "balance": 4929.33,
+          "date": "2026-07-01",
+          "description": "TO 54509600335 -",
+          "type": "credit"
+        },
+        {
+          "amount": 4781.59,
+          "balance": 1130.4,
+          "date": "2026-07-01",
+          "description": "TO 54509600335 -",
+          "type": "credit"
+        }
+      ],
+      "fixture": {
+        "format": "pdf",
+        "lines": [
+          "16/04/2026 13/04/2026 4433118506431 AT 27379 - 2,746.18   -       3,103.62",
+          "11/05/2026 08/05/2026 7706730099400 OF MAR UMBER 564640 7,066.65 - 6,213.02",
+          "24/05/2026 21/05/2026 7706730099400 OF MAR UMBER 564641 1,625.41 - 8,086.98",
+          "30/05/2026 27/05/2026               564642  7,480.61     -       4,336.28",
+          "14/06/2026 11/06/2026 7706730099400 OF MAR UMBER 564654 6,037.77 - 7,723.92",
+          "25/06/2026 22/06/2026 YARR559406466447208409811/P/ - - 1,662.08 2,989.92",
+          "28/06/2026 25/06/2026 INTEREST CREDIT -        -        3,256.68  3,218.38",
+          "01/07/2026 28/06/2026 84814643409 TO 54509600335 - -    7,167.47  4,929.33",
+          "01/07/2026 28/06/2026 84814965895 TO 54509600335 - -    4,781.59  1,130.40"
+        ]
+      },
+      "generated_at": "2026-09-19T08:28:13.728725+00:00",
+      "spec": {
+        "bank_key": "sbi",
+        "currency": "INR",
+        "id": "user:state_bank_of_india_savings",
+        "keywords": [
+          "state bank of india",
+          "chhend"
+        ],
+        "kind": "bank_savings",
+        "label": "State Bank of India Statement of Account",
+        "origin": "ai_draft",
+        "sources": [
+          {
+            "columns": {
+              "balance": [
+                "Balance"
+              ],
+              "credit": [
+                "Deposit"
+              ],
+              "date": [
+                "Date"
+              ],
+              "debit": [
+                "Withdrawal"
+              ],
+              "description": [
+                "Narration"
+              ],
+              "reference": [
+                "Ref No"
+              ]
+            },
+            "date_formats": [
+              "%d/%m/%Y"
+            ],
+            "engine": "pdf_text_regex",
+            "formats": [
+              "pdf"
+            ],
+            "header": {
+              "all_of": [
+                "balance"
+              ],
+              "match": "row_substring"
+            },
+            "row_pattern": "^(?P<date>\\d{2}/\\d{2}/\\d{4})\\s+(?:\\d{2}/\\d{2}/\\d{4})\\s+(?:(?P<reference>\\S+)\\s+)?(?P<description>.*?)\\s+(?P<debit>[\\d,]+\\.\\d{2}|-)\\s+(?P<credit>[\\d,]+\\.\\d{2}|-)\\s+(?P<balance>[\\d,]+\\.\\d{2}(?:CR|DR)?)\\s*$",
+            "skip_if_description_contains": [
+              "Page no."
+            ],
+            "stop_if_row_contains": [
+              "statement summary"
+            ]
+          }
+        ],
+        "version": 1
+      }
+    }
+  ]
+}
