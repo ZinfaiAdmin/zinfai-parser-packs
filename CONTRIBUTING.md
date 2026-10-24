@@ -17,6 +17,9 @@ demonstrably doesn't.
 
 ## Steps
 
+Zinfai shares a learned bank or card Format by itself (see README →
+"Automatically"); these steps are for submitting one by hand.
+
 Start here whichever way you submit:
 
 1. Get the parser working in Zinfai first (Settings → Statement Parsers). A
@@ -40,8 +43,8 @@ less work for you and more for us, which is the right way round.
    and so on), and a maintainer runs the validator and opens the pull request
    for you.
 
-Zinfai ships no credential and cannot post anything on your behalf. The button
-fills in a form; you are the one who submits it. If you close the tab without
+This route posts nothing until you press submit: the button fills in a form,
+and you are the one who submits it. If you close the tab without
 submitting, nothing has happened and you can start again.
 
 ### Open the pull request yourself

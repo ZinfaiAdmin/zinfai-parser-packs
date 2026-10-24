@@ -28,8 +28,8 @@ Community specs also resolve **last** — behind the parsers that ship with
 Zinfai and behind any spec you confirmed yourself. A pack can fill a gap; it
 can never replace a parser you already have.
 
-**Fetching packs is off by default.** Turn it on in Settings → Automations
-only if you want it.
+Zinfai checks for a new pack daily and after every start. It can be switched
+off in Settings → Automations.
 
 ## What's in a sample
 
@@ -56,21 +56,31 @@ instead, because that is a bug in the redactor.
 
 ## Contributing a parser
 
-1. In Zinfai, upload a statement from the institution and let it learn the
-   layout (Settings → Statement Parsers).
-2. Once the parser reads your statements correctly, use **Contribute** on that
-   parser. Zinfai builds the redacted sample and hands you a JSON entry.
-3. Read the entry.
-4. Click **Submit it**. Zinfai opens a GitHub issue with the entry filled in;
-   you read it there and press submit, and a maintainer turns it into a pull
-   request. Or skip that and open the pull request yourself, adding the entry to
-   `packs/community.json` under `specs`.
+### Automatically
 
-Zinfai has no credential for this repository and never posts anything on your
-behalf — the button pre-fills a form and stops.
+A Format Zinfai learned, once a statement it read has been saved, is shared
+without anyone pressing anything:
 
-CI will validate it. If it fails, the error names the exact row and field that
-disagreed.
+1. Zinfai rebuilds the statement as a redacted sample (above) and checks that
+   the Format still reads that sample exactly.
+2. It sends the Format and the sample — nothing else, no file, no account, no
+   user id — to the contribution service at `zinfai.com/api/parser-spec`.
+3. The service opens a pull request here adding `contributions/<layout>.json`,
+   unless that layout is already here or already waiting in a pull request.
+4. CI validates it, merges it, and folds it into `packs/community.json`, which
+   every install picks up on its next daily check.
+
+Only bank and card statement Formats are shared; the redactor cannot yet
+rebuild the identity block a PPF passbook or a CAS is read from. Sharing can be
+switched off in Settings → Automations (`parser_pack_contribute_enabled`).
+
+### By hand
+
+Open a pull request adding a one-spec pack under `contributions/`, or an entry
+under `specs` in `packs/community.json`. CI will validate it. If it fails, the
+error names the exact row and field that disagreed. A pull request from a fork,
+or one that touches anything outside `contributions/`, is reviewed by a
+maintainer rather than merged automatically.
 
 ### Running the check yourself
 
@@ -83,7 +93,7 @@ ZINFAI_BACKEND=/path/to/zinfai/backend python tools/validate.py packs/community.
 ```
 
 **Note:** the Zinfai repository is currently private. CI therefore checks it
-out with a `ZINFAI_REPO_TOKEN` secret, which GitHub does not expose to pull
+out with a read-only deploy key (`ZINFAI_DEPLOY_KEY`), which GitHub does not expose to pull
 requests from forks. If your PR's validation job fails at the checkout step,
 that is why — say so in the PR and a maintainer will run it. Everything after
 that step is ordinary and reproducible.
@@ -102,6 +112,8 @@ that step is ordinary and reproducible.
 
 ```
 packs/community.json     the pack Zinfai downloads
+contributions/           one-spec packs as contributed, folded into the above
 tools/validate.py        the same validation CI runs
+tools/build_pack.py      folds contributions/ into packs/community.json
 .github/workflows/ci.yml runs every fixture on every PR
 ```
