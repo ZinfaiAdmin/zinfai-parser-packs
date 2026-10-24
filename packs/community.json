@@ -1,7 +1,7 @@
 {
   "pack_version": 1,
   "name": "community",
-  "generated_at": "2026-10-24T07:04:58.569805+00:00",
+  "generated_at": "2026-10-24T09:58:20.427963+00:00",
   "specs": [
     {
       "spec": {
@@ -307,6 +307,85 @@
         ],
         "version": 1
       }
+    },
+    {
+      "spec": {
+        "id": "sbi_mutual_fund_holdings",
+        "version": 1,
+        "label": "SBI Mutual Fund Holdings",
+        "kind": "holdings",
+        "origin": "ai_draft_auto",
+        "sources": [
+          {
+            "engine": "pdf_text_regex",
+            "formats": [
+              "pdf"
+            ],
+            "date_formats": [],
+            "columns": {
+              "symbol": [
+                "symbol"
+              ],
+              "name": [
+                "name"
+              ],
+              "invested": [
+                "invested"
+              ],
+              "quantity": [
+                "quantity"
+              ],
+              "value": [
+                "value"
+              ]
+            },
+            "header": {
+              "match": "row_substring",
+              "all_of": [
+                "scheme name",
+                "unit balance"
+              ]
+            },
+            "row_pattern": "^(?P<symbol>\\S+)\\s+(?P<name>.+?)\\s+(?P<invested>[\\d,]+\\.\\d{2})\\s+(?P<quantity>[\\d,]+\\.\\d{3})\\s+(?:\\d{2}-[A-Za-z]{3}-\\d{4})\\s+(?:[\\d,]+\\.\\d{4})\\s+(?P<value>[\\d,]+\\.\\d{2})$",
+            "stop_if_row_contains": [
+              "total"
+            ],
+            "text_extraction": "layout",
+            "row_window": 2,
+            "default_asset_type": "equity_mutual_fund"
+          }
+        ],
+        "bank_key": "other",
+        "keywords": [
+          "summary of holdings",
+          "scheme name",
+          "unit balance",
+          "cost of investment"
+        ]
+      },
+      "fixture": {
+        "format": "pdf",
+        "lines": [
+          "LD038 ROW 21 Delt Grovexxx Fablexxx Will Juni - Orchid 5,31,054.35 5,034.641 30-Wil-4248 81.2310  8,43,213.05"
+        ]
+      },
+      "expected": [
+        {
+          "symbol": "LD038",
+          "isin": null,
+          "name": "ROW 21 Delt Grovexxx Fablexxx Will Juni - Orchid",
+          "quantity": 5034.641,
+          "avg_price": 105.480083,
+          "price": 167.482259,
+          "invested": 531054.35,
+          "value": 843213.05,
+          "instrument_type": null,
+          "sector": null,
+          "default_asset_type": "equity_mutual_fund"
+        }
+      ],
+      "expected_account": {},
+      "generated_at": "2026-10-24T09:41:49.158550+00:00"
     }
   ]
 }
