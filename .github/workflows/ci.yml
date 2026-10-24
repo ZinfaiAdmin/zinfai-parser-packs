@@ -5,11 +5,22 @@ name: Validate packs
 # merge — that check is the only reason anyone should be willing to install
 # a parser written by a stranger.
 
+#
+# A contribution Zinfai opens itself (a `parser-spec/` branch in this
+# repository that adds only files under contributions/) is merged once it
+# validates, and folded into packs/community.json — the only file Zinfai
+# downloads. Without that last step a merged contribution reaches nobody.
+
 on:
   push:
     branches: [main]
   pull_request:
+  schedule:
+    - cron: '30 1 * * *'   # fold anything merged by hand
   workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   validate:
@@ -21,16 +32,16 @@ jobs:
       # Validation runs Zinfai's own schema and interpreter rather than a copy,
       # because a second implementation would eventually disagree with the
       # first and the disagreement would be silent. Zinfai is currently a
-      # private repository, so this needs a read-only token; see README →
-      # "Running the check yourself" for what to do on a pull request from a
-      # fork, where GitHub does not expose secrets.
+      # private repository, so this uses a read-only deploy key on it; see
+      # README → "Running the check yourself" for what to do on a pull request
+      # from a fork, where GitHub does not expose secrets.
       - name: Check out Zinfai, for its schema and interpreter
         id: zinfai
         continue-on-error: true
         uses: actions/checkout@v4
         with:
           repository: ZinfaiAdmin/zinfai
-          token: ${{ secrets.ZINFAI_REPO_TOKEN || github.token }}
+          ssh-key: ${{ secrets.ZINFAI_DEPLOY_KEY }}
           path: zinfai
 
       - name: Explain a missing checkout rather than failing cryptically
@@ -38,8 +49,8 @@ jobs:
         run: |
           echo "::error::Could not check out Zinfai. On a pull request from a" \
                "fork this is expected — a maintainer will run validation." \
-               "Otherwise, set the ZINFAI_REPO_TOKEN secret to a token with" \
-               "read access to ZinfaiAdmin/zinfai."
+               "Otherwise, set the ZINFAI_DEPLOY_KEY secret to the private" \
+               "half of a read-only deploy key on ZinfaiAdmin/zinfai."
           exit 1
 
       - uses: actions/setup-python@v5
@@ -61,7 +72,76 @@ jobs:
         env:
           ZINFAI_BACKEND: ${{ github.workspace }}/zinfai/backend
         run: |
-          for pack in packs/*.json; do
+          status=0
+          for pack in packs/*.json contributions/*.json; do
+            [ -e "$pack" ] || continue
             echo "== $pack"
-            python tools/validate.py "$pack"
+            python tools/validate.py "$pack" || status=1
           done
+          exit $status
+
+  fold:
+    # Only a pull request Zinfai opened from this repository; one from a fork,
+    # or one touching anything but contributions/, waits for a maintainer.
+    needs: validate
+    if: >-
+      github.event_name != 'pull_request' ||
+      (github.event.pull_request.head.repo.full_name == github.repository &&
+       startsWith(github.head_ref, 'parser-spec/'))
+    runs-on: ubuntu-latest
+    concurrency: fold-community-pack
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Merge the contribution
+        if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          others=$(gh pr view "$PR" -R "$GITHUB_REPOSITORY" --json files \
+                   -q '.files[].path' | grep -v -E '^contributions/[a-z0-9-]+\.json$' || true)
+          if [ -n "$others" ]; then
+            echo "::notice::Touches more than contributions/, left for a maintainer:" $others
+            exit 0
+          fi
+          gh pr merge "$PR" -R "$GITHUB_REPOSITORY" --squash --delete-branch
+
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/checkout@v4
+        with:
+          repository: ZinfaiAdmin/zinfai
+          ssh-key: ${{ secrets.ZINFAI_DEPLOY_KEY }}
+          path: zinfai
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install what the interpreter needs
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install \
+            openpyxl 'pydantic>=2' pydantic-settings loguru \
+            sqlalchemy psycopg2-binary pandas PyPDF2 pdfplumber PyMuPDF \
+            python-jose 'passlib[bcrypt]' python-dotenv
+
+      - name: Fold contributions into the pack Zinfai downloads
+        env:
+          ZINFAI_BACKEND: ${{ github.workspace }}/zinfai/backend
+        run: |
+          mkdir -p contributions
+          python tools/build_pack.py
+          git add packs/community.json
+          if git diff --cached --quiet; then
+            echo "Nothing new to fold."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Fold contributions into the community pack"
+          git push origin HEAD:main
