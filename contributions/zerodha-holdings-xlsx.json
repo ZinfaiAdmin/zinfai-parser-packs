@@ -1,0 +1,310 @@
+{
+  "pack_version": 1,
+  "name": "zerodha-contribution",
+  "generated_at": "2026-11-09T07:58:56.440540+00:00",
+  "specs": [
+    {
+      "spec": {
+        "id": "tradebook_mutual_funds",
+        "version": 1,
+        "label": "Tradebook for Mutual Funds",
+        "kind": "holdings",
+        "origin": "ai_draft_auto",
+        "sources": [
+          {
+            "engine": "excel_table",
+            "formats": [
+              "xlsx"
+            ],
+            "date_formats": [],
+            "columns": {
+              "symbol": [
+                "Symbol"
+              ],
+              "isin": [
+                "ISIN"
+              ],
+              "quantity": [
+                "Quantity"
+              ],
+              "avg_price": [
+                "Price"
+              ]
+            },
+            "header": {
+              "match": "cell",
+              "all_of": [
+                "symbol",
+                "isin",
+                "quantity",
+                "price"
+              ]
+            },
+            "default_asset_type": "equity_mutual_fund"
+          }
+        ],
+        "bank_key": "zerodha",
+        "keywords": [
+          "tradebook for mutual funds"
+        ]
+      },
+      "fixture": {
+        "format": "xlsx",
+        "rows": [
+          [
+            "",
+            "Symbol",
+            "ISIN",
+            "Trade Date",
+            "Exchange",
+            "Segment",
+            "Series",
+            "Trade Type",
+            "Auction",
+            "Quantity",
+            "Price",
+            "Trade ID",
+            "Order ID",
+            "Order Execution Time"
+          ],
+          [
+            "",
+            "KOTAK SMALL CAP FUND - DIRECT PLAN - GROWTH",
+            "INF396K23KT4",
+            "5359-31-38",
+            "ZEP",
+            "MF",
+            "",
+            "qua",
+            "Fable",
+            "43.994",
+            "812.265",
+            "8581952886",
+            "8581952886",
+            "3137-19-16T11:11:11"
+          ],
+          [
+            "",
+            "MIRAE ASSET LARGE & MIDCAP FUND - DIRECT PLAN - GROWTH",
+            "INF325K67BI7",
+            "5359-31-38",
+            "ZEP",
+            "MF",
+            "",
+            "qua",
+            "Fable",
+            "524.896",
+            "637.022",
+            "4147697494",
+            "4147697494",
+            "3137-19-16T11:11:11"
+          ],
+          [
+            "",
+            "MOTILAL OSWAL LARGE AND MIDCAP FUND-DIRECT GROWTH",
+            "INF792L56444",
+            "5359-31-38",
+            "ZEP",
+            "MF",
+            "",
+            "qua",
+            "Fable",
+            "715.122",
+            "83.5532",
+            "8581077635",
+            "8581077635",
+            "3137-19-16T11:11:11"
+          ],
+          [
+            "",
+            "PARAG PARIKH FLEXI CAP FUND - DIRECT PLAN GROWTH",
+            "INF213O45461",
+            "5359-31-38",
+            "ZEP",
+            "MF",
+            "",
+            "qua",
+            "Fable",
+            "810.088",
+            "30.3137",
+            "4147629027",
+            "4147629027",
+            "3137-19-16T11:11:11"
+          ],
+          [
+            "",
+            "KOTAK SMALL CAP FUND - DIRECT PLAN - GROWTH",
+            "INF396K23KT4",
+            "9793-76-74",
+            "ZEP",
+            "MF",
+            "",
+            "qua",
+            "Fable",
+            "65.243",
+            "269.21",
+            "0775579675",
+            "0775579675",
+            "4248-21-29T22:22:22"
+          ],
+          [
+            "",
+            "MIRAE ASSET LARGE & MIDCAP FUND - DIRECT PLAN - GROWTH",
+            "INF325K67BI7",
+            "9793-76-74",
+            "ZEP",
+            "MF",
+            "",
+            "qua",
+            "Fable",
+            "872.045",
+            "402.823",
+            "9664569213",
+            "9664569213",
+            "4248-21-29T22:22:22"
+          ],
+          [
+            "",
+            "MOTILAL OSWAL LARGE AND MIDCAP FUND-DIRECT GROWTH",
+            "INF792L56444",
+            "9793-76-74",
+            "ZEP",
+            "MF",
+            "",
+            "qua",
+            "Fable",
+            "858.742",
+            "22.0204",
+            "8553362554",
+            "8553362554",
+            "4248-21-29T22:22:22"
+          ],
+          [
+            "",
+            "PARAG PARIKH FLEXI CAP FUND - DIRECT PLAN GROWTH",
+            "INF213O45461",
+            "9793-76-74",
+            "ZEP",
+            "MF",
+            "",
+            "qua",
+            "Fable",
+            "833.382",
+            "14.7672",
+            "5220035104",
+            "5220035104",
+            "4248-21-29T22:22:22"
+          ]
+        ]
+      },
+      "expected": [
+        {
+          "symbol": "KOTAK SMALL CAP FUND - DIRECT PLAN - GROWTH",
+          "isin": "INF396K23KT4",
+          "name": "KOTAK SMALL CAP FUND - DIRECT PLAN - GROWTH",
+          "quantity": 43.994,
+          "avg_price": 812.265,
+          "price": 812.265,
+          "invested": 35734.79,
+          "value": 35734.79,
+          "instrument_type": null,
+          "sector": null,
+          "default_asset_type": "equity_mutual_fund"
+        },
+        {
+          "symbol": "MIRAE ASSET LARGE & MIDCAP FUND - DIRECT PLAN - GR",
+          "isin": "INF325K67BI7",
+          "name": "MIRAE ASSET LARGE & MIDCAP FUND - DIRECT PLAN - GROWTH",
+          "quantity": 524.896,
+          "avg_price": 637.022,
+          "price": 637.022,
+          "invested": 334370.3,
+          "value": 334370.3,
+          "instrument_type": null,
+          "sector": null,
+          "default_asset_type": "equity_mutual_fund"
+        },
+        {
+          "symbol": "MOTILAL OSWAL LARGE AND MIDCAP FUND-DIRECT GROWTH",
+          "isin": "INF792L56444",
+          "name": "MOTILAL OSWAL LARGE AND MIDCAP FUND-DIRECT GROWTH",
+          "quantity": 715.122,
+          "avg_price": 83.5532,
+          "price": 83.5532,
+          "invested": 59750.73,
+          "value": 59750.73,
+          "instrument_type": null,
+          "sector": null,
+          "default_asset_type": "equity_mutual_fund"
+        },
+        {
+          "symbol": "PARAG PARIKH FLEXI CAP FUND - DIRECT PLAN GROWTH",
+          "isin": "INF213O45461",
+          "name": "PARAG PARIKH FLEXI CAP FUND - DIRECT PLAN GROWTH",
+          "quantity": 810.088,
+          "avg_price": 30.3137,
+          "price": 30.3137,
+          "invested": 24556.76,
+          "value": 24556.76,
+          "instrument_type": null,
+          "sector": null,
+          "default_asset_type": "equity_mutual_fund"
+        },
+        {
+          "symbol": "KOTAK SMALL CAP FUND - DIRECT PLAN - GROWTH",
+          "isin": "INF396K23KT4",
+          "name": "KOTAK SMALL CAP FUND - DIRECT PLAN - GROWTH",
+          "quantity": 65.243,
+          "avg_price": 269.21,
+          "price": 269.21,
+          "invested": 17564.07,
+          "value": 17564.07,
+          "instrument_type": null,
+          "sector": null,
+          "default_asset_type": "equity_mutual_fund"
+        },
+        {
+          "symbol": "MIRAE ASSET LARGE & MIDCAP FUND - DIRECT PLAN - GR",
+          "isin": "INF325K67BI7",
+          "name": "MIRAE ASSET LARGE & MIDCAP FUND - DIRECT PLAN - GROWTH",
+          "quantity": 872.045,
+          "avg_price": 402.823,
+          "price": 402.823,
+          "invested": 351279.78,
+          "value": 351279.78,
+          "instrument_type": null,
+          "sector": null,
+          "default_asset_type": "equity_mutual_fund"
+        },
+        {
+          "symbol": "MOTILAL OSWAL LARGE AND MIDCAP FUND-DIRECT GROWTH",
+          "isin": "INF792L56444",
+          "name": "MOTILAL OSWAL LARGE AND MIDCAP FUND-DIRECT GROWTH",
+          "quantity": 858.742,
+          "avg_price": 22.0204,
+          "price": 22.0204,
+          "invested": 18909.84,
+          "value": 18909.84,
+          "instrument_type": null,
+          "sector": null,
+          "default_asset_type": "equity_mutual_fund"
+        },
+        {
+          "symbol": "PARAG PARIKH FLEXI CAP FUND - DIRECT PLAN GROWTH",
+          "isin": "INF213O45461",
+          "name": "PARAG PARIKH FLEXI CAP FUND - DIRECT PLAN GROWTH",
+          "quantity": 833.382,
+          "avg_price": 14.7672,
+          "price": 14.7672,
+          "invested": 12306.72,
+          "value": 12306.72,
+          "instrument_type": null,
+          "sector": null,
+          "default_asset_type": "equity_mutual_fund"
+        }
+      ],
+      "expected_account": {},
+      "generated_at": "2026-11-09T07:58:56.412175+00:00"
+    }
+  ]
+}
