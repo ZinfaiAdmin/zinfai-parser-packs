@@ -1,0 +1,210 @@
+{
+  "pack_version": 1,
+  "name": "icici_direct-contribution",
+  "generated_at": "2026-11-09T08:47:23.752143+00:00",
+  "specs": [
+    {
+      "spec": {
+        "id": "generic_stock_holdings_xls",
+        "version": 1,
+        "label": "Broker Holdings Statement",
+        "kind": "holdings",
+        "origin": "ai_draft_auto",
+        "sources": [
+          {
+            "engine": "excel_table",
+            "formats": [
+              "xls"
+            ],
+            "date_formats": [],
+            "columns": {
+              "name": [
+                "Stock Name"
+              ],
+              "symbol": [
+                "Stock"
+              ],
+              "isin": [
+                "ISIN"
+              ],
+              "quantity": [
+                "Allocated Quantity"
+              ],
+              "price": [
+                "Current Market Price"
+              ],
+              "value": [
+                "Market Value"
+              ]
+            },
+            "header": {
+              "match": "cell",
+              "all_of": [
+                "stock name",
+                "stock",
+                "isin",
+                "allocated quantity",
+                "current market price",
+                "market value"
+              ]
+            },
+            "default_asset_type": "stock"
+          }
+        ],
+        "bank_key": "icici_direct",
+        "keywords": [
+          "stock name",
+          "allocated quantity",
+          "current market price",
+          "market value"
+        ]
+      },
+      "fixture": {
+        "format": "xls",
+        "rows": [
+          [
+            "Stock Name",
+            "Stock",
+            "ISIN",
+            "Allocated Quantity",
+            "Blocked for Trade",
+            "Block For Margin",
+            "Current Market Price",
+            "% Change",
+            "Market Value",
+            "Mandate Quantity"
+          ],
+          [
+            "5.83% DEL. DELT QUAR 1 WIL 51",
+            "SGBSEP28VI",
+            "IN0353533428",
+            "31",
+            "7",
+            "7",
+            "39912.11",
+            "+6.98",
+            "1237275.41",
+            "7"
+          ],
+          [
+            "CIRRU LUMENXXXXX DELT GRO",
+            "ICICIGOLD",
+            "INF654KC6NT8",
+            "5916",
+            "7",
+            "7",
+            "958.11",
+            "6.95",
+            "5668179",
+            "7"
+          ],
+          [
+            "JUNIPERX EMBERX KESTREL",
+            "KGL",
+            "INE855C67680",
+            "15881",
+            "7",
+            "7",
+            "0.13",
+            "6.66",
+            "2064.53",
+            "7"
+          ],
+          [
+            "HALCYO GROVE INDIGO GRO",
+            "SILVERBEES",
+            "INF759KC6957",
+            "7527",
+            "7",
+            "7",
+            "125.16",
+            "7.51",
+            "942079",
+            "7"
+          ],
+          [
+            "ROW Delt GRO",
+            "SETFGOLD",
+            "INF755KA61D3",
+            "33959",
+            "7",
+            "7",
+            "528.50",
+            "3.67",
+            "17947331.5",
+            "7"
+          ]
+        ]
+      },
+      "expected": [
+        {
+          "symbol": "SGBSEP28VI",
+          "isin": "IN0353533428",
+          "name": "5.83% DEL. DELT QUAR 1 WIL 51",
+          "quantity": 31,
+          "avg_price": null,
+          "price": 39912.11,
+          "invested": null,
+          "value": 1237275.41,
+          "instrument_type": null,
+          "sector": null,
+          "default_asset_type": "stock"
+        },
+        {
+          "symbol": "ICICIGOLD",
+          "isin": "INF654KC6NT8",
+          "name": "CIRRU LUMENXXXXX DELT GRO",
+          "quantity": 5916,
+          "avg_price": null,
+          "price": 958.11,
+          "invested": null,
+          "value": 5668179,
+          "instrument_type": null,
+          "sector": null,
+          "default_asset_type": "stock"
+        },
+        {
+          "symbol": "KGL",
+          "isin": "INE855C67680",
+          "name": "JUNIPERX EMBERX KESTREL",
+          "quantity": 15881,
+          "avg_price": null,
+          "price": 0.13,
+          "invested": null,
+          "value": 2064.53,
+          "instrument_type": null,
+          "sector": null,
+          "default_asset_type": "stock"
+        },
+        {
+          "symbol": "SILVERBEES",
+          "isin": "INF759KC6957",
+          "name": "HALCYO GROVE INDIGO GRO",
+          "quantity": 7527,
+          "avg_price": null,
+          "price": 125.16,
+          "invested": null,
+          "value": 942079,
+          "instrument_type": null,
+          "sector": null,
+          "default_asset_type": "stock"
+        },
+        {
+          "symbol": "SETFGOLD",
+          "isin": "INF755KA61D3",
+          "name": "ROW Delt GRO",
+          "quantity": 33959,
+          "avg_price": null,
+          "price": 528.5,
+          "invested": null,
+          "value": 17947331.5,
+          "instrument_type": null,
+          "sector": null,
+          "default_asset_type": "stock"
+        }
+      ],
+      "expected_account": {},
+      "generated_at": "2026-11-09T08:47:23.728061+00:00"
+    }
+  ]
+}
